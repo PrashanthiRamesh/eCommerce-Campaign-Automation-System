@@ -1,4 +1,4 @@
-package com.github.comp6841.project.eCommerceCampaignAutomationSystem;
+package concordia.comp6841.ecas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
