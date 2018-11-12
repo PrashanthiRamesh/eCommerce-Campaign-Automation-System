@@ -14,14 +14,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 	 	@Override
 	    public void configure(WebSecurity web) throws Exception {
-	        web.ignoring().antMatchers("/resources/**", "/h2");			// ignore security for these end points
+	        web.ignoring().antMatchers("/resources/**", "/h2/**");			// ignore security for these end points
 	    }
 	 	
 	 	 @Override
 	     protected void configure(HttpSecurity http) throws Exception {
-	         http.authorizeRequests().antMatchers("/**").permitAll()
-	         .anyRequest().authenticated().and().formLogin()
-	             .permitAll().and().logout().permitAll();
+	         http
+				.authorizeRequests()
+					.antMatchers("/register").permitAll()		
+					.antMatchers("/**").hasRole("USER")			
+					.and()
+				.formLogin().
+					failureUrl("/login-error");	
 
 	         http.csrf().disable();
 	     }
