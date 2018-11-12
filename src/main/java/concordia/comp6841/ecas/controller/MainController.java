@@ -13,6 +13,13 @@ public class MainController {
 	
 		return "home";
 	}
+	
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String register(Model model) {
+	
+		return "register";
+	}
+	
 
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
