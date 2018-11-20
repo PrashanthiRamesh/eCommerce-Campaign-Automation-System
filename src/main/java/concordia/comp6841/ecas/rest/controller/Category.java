@@ -25,20 +25,21 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import concordia.comp6841.ecas.service.CategoryService;
 import concordia.comp6841.ecas.service.ProductService;
 
 @RestController
-@RequestMapping("/api/product")
-public class Product {
+@RequestMapping("/api/category")
+public class Category {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
 	@Autowired
-	ProductService productService;
+	CategoryService categoryService;
 
 	@RequestMapping(value = "/save/all", method = RequestMethod.GET)
-	public String getProducts() throws IOException {
+	public String getCategories() throws IOException {
 
 		HttpHeaders headers = new HttpHeaders();
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
@@ -49,23 +50,22 @@ public class Product {
 		HttpEntity<?> entity = new HttpEntity<Object>(body, headers);
 
 		ResponseEntity<String> response = restTemplate.exchange(
-				"http://localhost/wordpress-spm-project/index.php/wp-json/campaignit/v1/woo/get/all/products",
+				"http://localhost/wordpress-spm-project/index.php/wp-json/campaignit/v1/woo/get/all/categories",
 				HttpMethod.POST, entity, String.class);
-		BufferedWriter writer = new BufferedWriter(new FileWriter("test.json"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("categories.json"));
 		writer.write(response.getBody());
 		writer.close();
 		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<List<concordia.comp6841.ecas.entity.Product>> typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.Product>>() {
+		TypeReference<List<concordia.comp6841.ecas.entity.Category>> typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.Category>>() {
 		};
-		InputStream inputStream = new DataInputStream(new FileInputStream("test.json"));
+		InputStream inputStream = new DataInputStream(new FileInputStream("categories.json"));
 		try {
-			List<concordia.comp6841.ecas.entity.Product> products = mapper.readValue(inputStream, typeReference);
-			productService.save(products);
+			List<concordia.comp6841.ecas.entity.Category> categories = mapper.readValue(inputStream, typeReference);
+			categoryService.save(categories);
 			return "Yay";
 		} catch (IOException e) {
-			return "Nah"+ e.getMessage();
+			return "Nah" + e.getMessage();
 		}
-		
-	}
 
+	}
 }
