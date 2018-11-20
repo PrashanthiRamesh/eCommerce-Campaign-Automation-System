@@ -12,16 +12,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Product {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String name;
 	private String sku;
 	private Double price;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "product_category", 
+	joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"), 
+	inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
 	private Collection<Category> categories;
+
+	public Product() {
+		
+	}
+	
+	public Product(Long id, String name, String sku, Double price, Collection<Category> categories) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.sku = sku;
+		this.price = price;
+		this.categories = categories;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -68,6 +83,5 @@ public class Product {
 		return "Product [id=" + id + ", name=" + name + ", sku=" + sku + ", price=" + price + ", categories="
 				+ categories + "]";
 	}
-
 
 }

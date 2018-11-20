@@ -1,8 +1,6 @@
 package concordia.comp6841.ecas.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
