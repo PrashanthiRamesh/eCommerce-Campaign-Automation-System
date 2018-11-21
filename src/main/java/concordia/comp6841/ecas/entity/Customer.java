@@ -1,6 +1,5 @@
 package concordia.comp6841.ecas.entity;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;

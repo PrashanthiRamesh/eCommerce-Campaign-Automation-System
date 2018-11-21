@@ -25,21 +25,20 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import concordia.comp6841.ecas.service.CustomerService;
-
+import concordia.comp6841.ecas.service.OrderService;
 
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerRestController {
+@RequestMapping("/api/order")
+public class OrderRestController {
 
 	@Autowired
 	RestTemplate restTemplate;
 	
 	@Autowired
-	CustomerService customerService;
+	OrderService orderService;
 
 	@RequestMapping(value = "/save/all", method = RequestMethod.GET)
-	public String getCustomers() throws IOException {
+	public String getOrders() throws IOException {
 
 		HttpHeaders headers = new HttpHeaders();
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
@@ -50,18 +49,18 @@ public class CustomerRestController {
 		HttpEntity<?> entity = new HttpEntity<Object>(body, headers);
 
 		ResponseEntity<String> response = restTemplate.exchange(
-				"http://localhost/wordpress-spm-project/index.php/wp-json/campaignit/v1/woo/get/all/customers",
+				"http://localhost/wordpress-spm-project/index.php/wp-json/campaignit/v1/woo/get/all/orders",
 				HttpMethod.POST, entity, String.class);
-		BufferedWriter writer = new BufferedWriter(new FileWriter("customer.json"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("order.json"));
 		writer.write(response.getBody());
 		writer.close();
 		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<List<concordia.comp6841.ecas.entity.Customer>> typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.Customer>>() {
+		TypeReference<List<concordia.comp6841.ecas.entity.COrder>> typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.COrder>>() {
 		};
-		InputStream inputStream = new DataInputStream(new FileInputStream("customer.json"));
+		InputStream inputStream = new DataInputStream(new FileInputStream("order.json"));
 		try {
-			List<concordia.comp6841.ecas.entity.Customer> customers = mapper.readValue(inputStream, typeReference);
-			customerService.save(customers);
+			List<concordia.comp6841.ecas.entity.COrder> orders = mapper.readValue(inputStream, typeReference);
+			orderService.save(orders);
 			return "Yay";
 		} catch (IOException e) {
 			return "Nah"+ e.getMessage();
