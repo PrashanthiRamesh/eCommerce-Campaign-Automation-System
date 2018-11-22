@@ -78,18 +78,18 @@
 						<li></li>
 						<li><a href="/"><i class="fa fa-bar-chart-o fa-fw"></i>
 								Dashboard</a></li>
-						<li><a href="/product/all" ><i class="fa fa-cubes fa-fw"></i>
+						<li><a href="/product/all"><i class="fa fa-cubes fa-fw"></i>
 								Products</a>
-						<li><a href="/order/all" ><i class="fa fa-cart-plus fa-fw"></i>
-								Orders</a></li>
-						<li><a href="/customer/all" class="active"><i class="fa fa-users fa-fw"></i>
-								Customers</a></li>
-						<li><a href="/campaign/all"><i class="fa fa-envelope fa-fw"></i>
-								Campaigns</a>
+						<li><a href="/order/all"><i
+								class="fa fa-cart-plus fa-fw"></i> Orders</a></li>
+						<li><a href="/customer/all" class="active"><i
+								class="fa fa-users fa-fw"></i> Customers</a></li>
+						<li><a href="/campaign/all"><i
+								class="fa fa-envelope fa-fw"></i> Campaigns</a>
 						<li><a href="/customer_group/all"><i
 								class="fa fa-user-plus fa-fw"></i> Customer Groups</a>
-						<li><a href="/settings"><i
-								class="fa fa-edit fa-fw"></i> Settings</a>
+						<li><a href="/settings"><i class="fa fa-edit fa-fw"></i>
+								Settings</a>
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
@@ -101,6 +101,29 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">Customers</h1>
+				</div>
+				<div class="row col-md-7 table-responsive">
+					<table id="customerTable" class="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Name</th>
+								<th>Age</th>
+								<th>Street</th>
+								<th>Postcode</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="customer, rowStat: ${customers}"
+								th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
+								<td th:text="${customer.id}">1</td>
+								<td th:text="${customer.name}">Jack</td>
+								<td th:text="${customer.age}">23</td>
+								<td th:text="${customer.address.street}">AVE N</td>
+								<td th:text="${customer.address.postcode}">77587</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
