@@ -26,7 +26,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import concordia.comp6841.ecas.service.AbandonedCartService;
-import concordia.comp6841.ecas.service.CustomerService;
+
 
 
 @RestController

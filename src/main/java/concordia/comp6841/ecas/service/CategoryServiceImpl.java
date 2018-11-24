@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import concordia.comp6841.ecas.entity.Category;
-import concordia.comp6841.ecas.entity.Product;
 import concordia.comp6841.ecas.repository.CategoryRepository;
-import concordia.comp6841.ecas.repository.ProductRepository;
+
 
 @Service
 public class CategoryServiceImpl implements CategoryService {

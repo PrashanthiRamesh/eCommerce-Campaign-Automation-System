@@ -26,7 +26,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import concordia.comp6841.ecas.service.CategoryService;
-import concordia.comp6841.ecas.service.ProductService;
+
 
 @RestController
 @RequestMapping("/api/category")
