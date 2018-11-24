@@ -107,20 +107,23 @@
 						<thead>
 							<tr>
 								<th>Id</th>
-								<th>Name</th>
-								<th>Age</th>
-								<th>Street</th>
-								<th>Postcode</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>Username</th>
+								<th>Created On</th>
+								<th>Last Seen</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="customer, rowStat: ${customers}"
-								th:style="${rowStat.odd} ? 'color: gray' : 'color: blue;'">
-								<td th:text="${customer.id}">1</td>
-								<td th:text="${customer.name}">Jack</td>
-								<td th:text="${customer.age}">23</td>
-								<td th:text="${customer.address.street}">AVE N</td>
-								<td th:text="${customer.address.postcode}">77587</td>
+							<tr th:each="customer : ${customers}">
+								<td th:text="${customer.id}"></td>
+								<td th:text="${customer.first_name}"></td>
+								<td th:text="${customer.last_name}"></td>
+								<td th:text="${customer.email}"></td>
+								<td th:text="${customer.username}"></td>
+								<td th:text="${customer.created_at}"></td>
+								<td th:text="${customer.last_seen}"></td>
 							</tr>
 						</tbody>
 					</table>

@@ -1,12 +1,12 @@
 package concordia.comp6841.ecas.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import concordia.comp6841.ecas.entity.Customer;
 import concordia.comp6841.ecas.repository.CustomerRepository;
-
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -17,12 +17,13 @@ public class CustomerServiceImpl implements CustomerService {
 		super();
 		this.customerRepository = customerRepository;
 	}
-	
-	public Iterable<Customer> list(){
+
+	public Iterable<Customer> list() {
 		return customerRepository.findAll();
 	}
-	
-	public Iterable<Customer> save(List<Customer> customers){
+
+	public Iterable<Customer> save(List<Customer> customers) {
 		return customerRepository.saveAll(customers);
 	}
+
 }
