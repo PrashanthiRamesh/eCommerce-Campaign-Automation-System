@@ -3,8 +3,6 @@ package concordia.comp6841.ecas.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -14,13 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "id", "email" }))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class AbandonedCart {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
 	private String email;
 
 	private String first_name;
@@ -29,14 +24,6 @@ public class AbandonedCart {
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date date;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -72,9 +59,8 @@ public class AbandonedCart {
 
 	@Override
 	public String toString() {
-		return "AbandonedCart [id=" + id + ", email=" + email + ", first_name=" + first_name + ", last_name="
-				+ last_name + ", date=" + date + "]";
+		return "AbandonedCart [email=" + email + ", first_name=" + first_name + ", last_name=" + last_name + ", date="
+				+ date + "]";
 	}
 
-	
 }

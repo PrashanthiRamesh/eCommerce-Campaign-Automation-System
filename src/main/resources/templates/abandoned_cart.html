@@ -108,24 +108,18 @@
 					<table id="customerTable" class="table">
 						<thead>
 							<tr>
-								<th>Id</th>
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Email</th>
-								<th>Username</th>
-								<th>Created On</th>
-								<th>Last Seen</th>
+								<th>Abandoned On</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="customer : ${customers}">
-								<td th:text="${customer.id}"></td>
-								<td th:text="${customer.first_name}"></td>
-								<td th:text="${customer.last_name}"></td>
-								<td th:text="${customer.email}"></td>
-								<td th:text="${customer.username}"></td>
-								<td th:text="${customer.created_at}"></td>
-								<td th:text="${customer.last_seen}"></td>
+							<tr th:each="abandoned_cart : ${abandoned_carts}">
+								<td th:text="${abandoned_cart.first_name}"></td>
+								<td th:text="${abandoned_cart.last_name}"></td>
+								<td th:text="${abandoned_cart.email}"></td>
+								<td th:text="${abandoned_cart.date}"></td>
 							</tr>
 						</tbody>
 					</table>
