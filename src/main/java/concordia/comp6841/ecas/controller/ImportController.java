@@ -30,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import concordia.comp6841.ecas.service.AbandonedCartService;
 import concordia.comp6841.ecas.service.CategoryService;
 import concordia.comp6841.ecas.service.CustomerService;
 import concordia.comp6841.ecas.service.OrderService;
@@ -54,11 +55,15 @@ public class ImportController {
 	@Autowired
 	OrderService orderService;
 
+	@Autowired
+	AbandonedCartService abandonedCartService;
+
 	@PostMapping("/start")
 	public String startImport(Model model, @RequestParam("woo_username") String username,
 			@RequestParam("woo_password") String password, @RequestParam("woo_email") String email) throws IOException {
 		if (syncCategories(username, password, email) && syncProducts(username, password, email)
-				&& syncCustomers(username, password, email) && syncOrders(username, password, email)) {
+				&& syncCustomers(username, password, email) && syncOrders(username, password, email)
+				&& syncAbandonedCarts(username, password, email)) {
 			return "redirect:/settings?success";
 		} else {
 			return "redirect:/settings?fail";
@@ -172,6 +177,36 @@ public class ImportController {
 
 			List<concordia.comp6841.ecas.entity.COrder> orders = mapper.readValue(inputStream, typeReference);
 			orderService.save(orders);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+	public Boolean syncAbandonedCarts(String username, String password, String email) {
+		HttpHeaders headers = new HttpHeaders();
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+		body.add("woo-username", username);
+		body.add("woo-password", password);
+		body.add("woo-email", email);
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<?> entity = new HttpEntity<Object>(body, headers);
+		try {
+			ResponseEntity<String> response = restTemplate.exchange(
+					"http://localhost/wordpress-spm-project/index.php/wp-json/campaignit/v1/woo/get/all/abandoned_carts",
+					HttpMethod.POST, entity, String.class);
+			BufferedWriter writer = new BufferedWriter(new FileWriter("abandoned_cart.json"));
+			writer.write(response.getBody());
+			writer.close();
+			ObjectMapper mapper = new ObjectMapper();
+			TypeReference<List<concordia.comp6841.ecas.entity.AbandonedCart>> typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.AbandonedCart>>() {
+			};
+			InputStream inputStream = new DataInputStream(new FileInputStream("abandoned_cart.json"));
+
+			List<concordia.comp6841.ecas.entity.AbandonedCart> abandonedCarts = mapper.readValue(inputStream,
+					typeReference);
+			abandonedCartService.save(abandonedCarts);
 			return true;
 		} catch (IOException e) {
 			return false;

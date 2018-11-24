@@ -84,6 +84,8 @@
 								Orders</a></li>
 						<li><a href="/customer/all"><i class="fa fa-users fa-fw"></i>
 								Customers</a></li>
+						<li><a href="/abandoned_cart/all" class="active"><i
+								class="fa fa-users fa-fw"></i> Abandoned Carts</a></li>
 						<li><a href="/campaign/all"><i
 								class="fa fa-envelope fa-fw"></i> Campaigns</a>
 						<li><a href="/customer_group/all"><i
@@ -149,10 +151,10 @@
 								Import</button>
 						</div>
 						<div th:if="${param.success}">
-							<div class="alert alert-info">You've successfully
-								imported data from Woocommerce into CampaignIt!</div>
+							<div class="alert alert-info">You've successfully imported
+								data from Woocommerce into CampaignIt!</div>
 						</div>
-						
+
 
 					</form>
 				</div>

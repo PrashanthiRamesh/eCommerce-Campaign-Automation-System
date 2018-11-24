@@ -80,15 +80,15 @@
 								Dashboard</a></li>
 						<li><a href="/product/all"><i class="fa fa-cubes fa-fw"></i>
 								Products</a>
-						<li><a href="/order/all"><i
-								class="fa fa-cart-plus fa-fw"></i> Orders</a></li>
-						<li><a href="/customer/all"><i class="fa fa-users fa-fw"></i>
-								Customers</a></li>
+						<li><a href="/order/all"><i class="fa fa-cart-plus fa-fw"></i>
+								Orders</a></li>
+						<li><a href="/customer/all" class="active"><i
+								class="fa fa-users fa-fw"></i> Customers</a></li>
 						<li><a href="/abandoned_cart/all" class="active"><i
 								class="fa fa-users fa-fw"></i> Abandoned Carts</a></li>
 						<li><a href="/campaign/all"><i
 								class="fa fa-envelope fa-fw"></i> Campaigns</a>
-						<li><a href="/customer_group/all" class="active"><i
+						<li><a href="/customer_group/all"><i
 								class="fa fa-user-plus fa-fw"></i> Customer Groups</a>
 						<li><a href="/settings"><i class="fa fa-edit fa-fw"></i>
 								Settings</a>
@@ -102,7 +102,33 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Customer Groups</h1>
+					<h1 class="page-header">Abandoned Carts</h1>
+				</div>
+				<div class="row col-md-7 table-responsive">
+					<table id="customerTable" class="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>Username</th>
+								<th>Created On</th>
+								<th>Last Seen</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="customer : ${customers}">
+								<td th:text="${customer.id}"></td>
+								<td th:text="${customer.first_name}"></td>
+								<td th:text="${customer.last_name}"></td>
+								<td th:text="${customer.email}"></td>
+								<td th:text="${customer.username}"></td>
+								<td th:text="${customer.created_at}"></td>
+								<td th:text="${customer.last_seen}"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
