@@ -105,27 +105,23 @@
 					<h1 class="page-header">Products</h1>
 				</div>
 				<div class="row col-md-7 table-responsive">
-					<table id="customerTable" class="table">
+					<table id="productTable" class="table">
 						<thead>
 							<tr>
 								<th>Id</th>
-								<th>First Name</th>
-								<th>Last Name</th>
-								<th>Email</th>
-								<th>Username</th>
-								<th>Created On</th>
-								<th>Last Seen</th>
+								<th>Name</th>
+								<th>Price($)</th>
+								<th>sku</th>
+								<th>Categories</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="customer : ${customers}">
-								<td th:text="${customer.id}"></td>
-								<td th:text="${customer.first_name}"></td>
-								<td th:text="${customer.last_name}"></td>
-								<td th:text="${customer.email}"></td>
-								<td th:text="${customer.username}"></td>
-								<td th:text="${customer.created_at}"></td>
-								<td th:text="${customer.last_seen}"></td>
+							<tr th:each="product : ${products}">
+								<td th:text="${product.id}"></td>
+								<td th:text="${product.name}"></td>
+								<td th:text="${product.price}"></td>
+								<td th:text="${product.sku}"></td>
+								<td th:each="category : ${product.categories}" th:text="${category.name}"></td>
 							</tr>
 						</tbody>
 					</table>
