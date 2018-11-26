@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import concordia.comp6841.ecas.repository.OrderRepository;
-import concordia.comp6841.ecas.repository.ProductRepository;
+
 
 @Controller
 @RequestMapping("/order/item")

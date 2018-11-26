@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import concordia.comp6841.ecas.entity.CustomerGroup;
@@ -52,6 +51,10 @@ public class CustomerGroupsController {
 		} else {
 			customerGroupService.save(customerGroup);
 		}
+		
+		//create active customers
+		
+		//create inactive customers
 
 		return "redirect:/customer_group/all?success";
 	}

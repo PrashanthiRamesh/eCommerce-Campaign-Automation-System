@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import concordia.comp6841.ecas.repository.OrderRepository;
-import concordia.comp6841.ecas.repository.ProductRepository;
 
 @Controller
 @RequestMapping("/order")

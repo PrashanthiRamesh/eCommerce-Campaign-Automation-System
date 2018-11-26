@@ -6,9 +6,16 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +32,13 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import concordia.comp6841.ecas.entity.Customer;
+import concordia.comp6841.ecas.entity.CustomerGroup;
+import concordia.comp6841.ecas.entity.User;
+import concordia.comp6841.ecas.repository.CustomerRepository;
 import concordia.comp6841.ecas.service.AbandonedCartService;
-
-
+import concordia.comp6841.ecas.service.CustomerGroupService;
+import concordia.comp6841.ecas.service.UserService;
 
 @RestController
 @RequestMapping("/api/abandoned_cart")
@@ -35,9 +46,18 @@ public class AbandonedCartRestController {
 
 	@Autowired
 	RestTemplate restTemplate;
-	
+
+	@Autowired
+	private CustomerGroupService customerGroupService;
+
+	@Autowired
+	private UserService userService;
+
 	@Autowired
 	AbandonedCartService abandonedCartService;
+
+	@Autowired
+	CustomerRepository customerRepository;
 
 	@RequestMapping(value = "/save/all", method = RequestMethod.GET)
 	public String getAbandonedCart() throws IOException {
@@ -61,13 +81,50 @@ public class AbandonedCartRestController {
 		};
 		InputStream inputStream = new DataInputStream(new FileInputStream("abandoned_cart.json"));
 		try {
-			List<concordia.comp6841.ecas.entity.AbandonedCart> abandonedCarts = mapper.readValue(inputStream, typeReference);
+			List<concordia.comp6841.ecas.entity.AbandonedCart> abandonedCarts = mapper.readValue(inputStream,
+					typeReference);
 			abandonedCartService.save(abandonedCarts);
 			return "Yay";
 		} catch (IOException e) {
-			return "Nah"+ e.getMessage();
+			return "Nah" + e.getMessage();
 		}
-		
+
+	}
+
+	@RequestMapping(value = "/test/active", method = RequestMethod.GET)
+	public List<Customer> gettestactive(Principal principal) throws ParseException {
+		// get active_lastseen
+		User user = userService.findByEmail(principal.getName());
+		String x = "nah";
+
+		CustomerGroup existing = customerGroupService.findByEmail(user.getEmail());
+
+		Integer active_lastseen = existing.getActive_lastseen();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+		DateTime lastWeek = new DateTime().minusDays(active_lastseen);
+		x = dateTimeFormatter.print(lastWeek);
+		List<Customer> result = customerRepository
+				.findAllWithLastSeenBefore(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(x));
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/test/inactive", method = RequestMethod.GET)
+	public List<Customer> gettestinactive(Principal principal) throws ParseException {
+		// get active_lastseen
+		User user = userService.findByEmail(principal.getName());
+		String x = "nah";
+
+		CustomerGroup existing = customerGroupService.findByEmail(user.getEmail());
+
+		Integer inactive_lastseen = existing.getInactive_lastseen();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+		DateTime lastWeek = new DateTime().minusDays(inactive_lastseen);
+		x = dateTimeFormatter.print(lastWeek);
+		List<Customer> result = customerRepository
+				.findAllWithLastSeenAfter(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(x));
+
+		return result;
 	}
 
 }
