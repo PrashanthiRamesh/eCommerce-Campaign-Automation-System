@@ -118,16 +118,16 @@
 							<div class="alert alert-danger">Invalid! Try Again</div>
 						</div>
 						<div class="form-group">
-							<input type="hidden" name="user_email"
-								id="user_email" tabindex="1" class="form-control"
-								placeholder="Active Last Seen" th:value="${user_email}" style="width: 400px;">
+							<input type="hidden" name="email"
+								id="email" tabindex="1" class="form-control"
+								placeholder="Active Last Seen" th:value="${email}" style="width: 400px;">
 						</div>
 						<div class="form-group">
 							<label for="active_lastseen"
 								style="text-align: right; clear: both; float: left; margin-right: 15px;">Last
 								Seen less than (Days)</label><input type="number" name="active_lastseen"
 								id="active_lastseen" tabindex="1" class="form-control"
-								placeholder="Active Last Seen" value="" style="width: 400px;">
+								placeholder="Active Last Seen" th:value="${customer_group.active_lastseen}" style="width: 400px;">
 						</div>
 						<div class="form-group">
 							<label>Inactive Customers</label>
@@ -137,7 +137,7 @@
 								style="text-align: right; clear: both; float: left; margin-right: 15px;">Last
 								Seen greater than (Days)</label><input type="number" name="inactive_lastseen"
 								id="inactive_lastseen" tabindex="1" class="form-control"
-								placeholder="Inactive Last Seen" value="" style="width: 400px;">
+								placeholder="Inactive Last Seen" th:value="${customer_group.inactive_lastseen}" style="width: 400px;">
 						</div>
 						<div class="form-group mx-sm-3 mb-2">
 							<button type="submit" class="btn btn-primary mb-2">Save</button>
