@@ -13,22 +13,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "id", "email" }))
-public class Customer {
+public class Customer  {
 
 	@Id
 	private Long id;
 
 	private String email;
-	
+
 	private String username;
-	
+
 	private String first_name;
-	
+
 	private String last_name;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created_at;
-	
+
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date last_seen;
 
@@ -93,5 +93,7 @@ public class Customer {
 		return "Customer [id=" + id + ", email=" + email + ", username=" + username + ", first_name=" + first_name
 				+ ", last_name=" + last_name + ", created_at=" + created_at + ", last_seen=" + last_seen + "]";
 	}
+
+	
 
 }

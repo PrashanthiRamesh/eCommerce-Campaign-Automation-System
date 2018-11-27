@@ -10,7 +10,6 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -29,9 +28,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import concordia.comp6841.ecas.entity.ActiveCustomer;
 import concordia.comp6841.ecas.entity.Customer;
 import concordia.comp6841.ecas.entity.CustomerGroup;
 import concordia.comp6841.ecas.entity.User;
@@ -92,7 +94,7 @@ public class AbandonedCartRestController {
 	}
 
 	@RequestMapping(value = "/test/active", method = RequestMethod.GET)
-	public List<Customer> gettestactive(Principal principal) throws ParseException {
+	public List<ActiveCustomer> gettestactive(Principal principal) throws ParseException, JsonParseException, JsonMappingException, IOException {
 		// get active_lastseen
 		User user = userService.findByEmail(principal.getName());
 		String x = "nah";
@@ -103,12 +105,22 @@ public class AbandonedCartRestController {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 		DateTime lastWeek = new DateTime().minusDays(active_lastseen);
 		x = dateTimeFormatter.print(lastWeek);
-		List<Customer> result = customerRepository
+		List<Customer> customers = customerRepository
 				.findAllWithLastSeenBefore(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(x));
+		ObjectMapper active_mapper = new ObjectMapper();
+		BufferedWriter active_writer = new BufferedWriter(new FileWriter("active_customers.json"));
+		active_writer.write(active_mapper.writeValueAsString(customers));
+		active_writer.close();
+		
+		TypeReference<List<concordia.comp6841.ecas.entity.ActiveCustomer>> active_typeReference = new TypeReference<List<concordia.comp6841.ecas.entity.ActiveCustomer>>() {
+		};
+		InputStream active_inputStream = new DataInputStream(new FileInputStream("active_customers.json"));
 
-		return result;
+		List<concordia.comp6841.ecas.entity.ActiveCustomer> activeCustomers = active_mapper.readValue(active_inputStream, active_typeReference);
+		
+		return activeCustomers;
 	}
-	
+
 	@RequestMapping(value = "/test/inactive", method = RequestMethod.GET)
 	public List<Customer> gettestinactive(Principal principal) throws ParseException {
 		// get active_lastseen
@@ -121,10 +133,10 @@ public class AbandonedCartRestController {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
 		DateTime lastWeek = new DateTime().minusDays(inactive_lastseen);
 		x = dateTimeFormatter.print(lastWeek);
-		List<Customer> result = customerRepository
+		List<Customer> customers = customerRepository
 				.findAllWithLastSeenAfter(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(x));
 
-		return result;
+		return customers;
 	}
 
 }
