@@ -35,7 +35,15 @@ public class CustomerGroupsController {
 		User user = userService.findByEmail(principal.getName());
 		model.addAttribute("email", user.getEmail());
 		model.addAttribute("customers", customerRepository.findAll());
-		model.addAttribute("customer_group",customerGroupService.findByEmail(user.getEmail()));
+		CustomerGroup existing = customerGroupService.findByEmail(user.getEmail());
+		if (existing != null) {
+			model.addAttribute("customer_group",existing);	
+		}else {
+			CustomerGroup newcs=new CustomerGroup(user.getEmail(), 0, 0);
+			CustomerGroup newcustomergroup= customerGroupService.save(newcs);
+			model.addAttribute("customer_group", newcustomergroup);
+		}
+
 		return "customer_group";
 	}
 
