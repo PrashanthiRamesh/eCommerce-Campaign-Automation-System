@@ -114,31 +114,27 @@
 					<form class="inline" th:action="@{/campaign}" method="post">
 						<div class="form-group">
 							<label for="name">Name</label> <input type="text" name="name"
-								id="name" tabindex="1" class="form-control" th:value="${name}"
+								id="name" tabindex="1" class="form-control"
 								style="width: 400px;">
 						</div>
 						<div class="form-group">
-							<label for="start">Start Date</label> <input type="datetime"
+							<label for="start">Start Date</label> <input type="datetime-local"
 								name="start" id="start" tabindex="2" class="form-control"
-								th:value="${start}" style="width: 400px;">
+								style="width: 400px;">
 						</div>
 						<div class="form-group">
-							<label for="end">End Date</label> <input type="datetime"
+							<label for="end">End Date</label> <input type="datetime-local"
 								name="end" id="end" tabindex="3" class="form-control"
-								th:value="${end}" style="width: 400px;">
+								style="width: 400px;">
 						</div>
 						<div class="form-group">
 							<label for="customer_group">Customer Group</label> <select
 								class="form-control" name="customer_group" id="customer_group"
 								tabindex="4" style="width: 400px;">
-								<option value="abandoned_cart"
-									th:selected="${customer_group == abandoned_cart}">Abandoned
-									Cart</option>
-								<option value="active_customers"
-									th:selected="${customer_group == active_customers}">Active
+								<option value="abandoned_cart">Abandoned Cart</option>
+								<option value="active_customers">Active
 									Customers</option>
-								<option value="inactive_customers"
-									th:selected="${customer_group == inactive_customers}">Inactive
+								<option value="inactive_customers">Inactive
 									Customers</option>
 							</select>
 						</div>
@@ -146,19 +142,23 @@
 						<div class="form-group">
 							<label for="subject">Subject</label> <input type="text"
 								name="subject" id="subject" tabindex="5" class="form-control"
-								th:value="${subject}" style="width: 400px;">
+								 style="width: 600px;">
 						</div>
 						<div class="form-group">
 							<label for="body">Body</label>
 							<textarea rows="4" cols="50" name="body" id="body" tabindex="6"
-								class="form-control" th:value="${body}">
+								class="form-control">
 							</textarea>
 						</div>
 						<div class="form-group mx-sm-3 mb-2">
 							<button type="submit" class="btn btn-primary mb-2">Save</button>
 						</div>
+						<div th:if="${param.fail}">
+							<div class="alert alert-danger">Campaign with this name already exists! </div>
+						</div>
+
 						<div th:if="${param.success}">
-							<div class="alert alert-info">Campaign Saved Successfully!</div>
+							<div class="alert alert-info">Campaign saved successfully!</div>
 						</div>
 
 					</form>
