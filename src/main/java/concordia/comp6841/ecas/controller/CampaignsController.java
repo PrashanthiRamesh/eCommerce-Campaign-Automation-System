@@ -56,8 +56,9 @@ public class CampaignsController {
 	}
 
 	@PostMapping("/{id}")
-	public String updateCampaignForm(@ModelAttribute("campaign") Campaign campaign, BindingResult result, Model model) {
-		Campaign existing = campaignRepository.findByName(campaign.getName());
+	public String updateCampaignForm(@ModelAttribute("campaign") Campaign campaign, BindingResult result, Model model,
+			@PathVariable Long id) {
+		Campaign existing = campaignRepository.findByid(id);
 		if (existing != null) {
 
 			// save campaign
@@ -65,6 +66,20 @@ public class CampaignsController {
 			return "redirect:/campaign/{id}?success";
 		} else {
 			return "redirect:/campaign/{id}?fail";
+		}
+
+	}
+
+	@GetMapping("/delete/{id}")
+	public String showDeleteCampaignForm(Model model, @PathVariable Long id) {
+		Campaign existing = campaignRepository.findByid(id);
+		if (existing != null) {
+
+			// save campaign
+			campaignRepository.delete(existing);
+			return "redirect:/campaign/all?delete_success";
+		} else {
+			return "redirect:/campaign/all?fail";
 		}
 
 	}
