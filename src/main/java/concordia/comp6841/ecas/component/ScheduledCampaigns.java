@@ -61,7 +61,7 @@ public class ScheduledCampaigns {
 	@Scheduled(fixedRate = 360000)
 	public void reportCurrentTime() throws AddressException, MessagingException, IOException {
 		log.info("The time is now {}", dateFormat.format(new Date()));
-		sendmail();
+		//sendmail();
 	}
 
 	private void sendmail() throws AddressException, MessagingException, IOException {
