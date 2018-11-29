@@ -58,10 +58,10 @@ public class ScheduledCampaigns {
 	// every 10 mins for testing (in reality it will be every day at 12pm) cron="0 0
 	// 12 * * ?"
 
-	@Scheduled(fixedRate = 360000)
+	@Scheduled(fixedRate = 600000)
 	public void reportCurrentTime() throws AddressException, MessagingException, IOException {
 		log.info("The time is now {}", dateFormat.format(new Date()));
-		//sendmail();
+		sendmail();
 	}
 
 	private void sendmail() throws AddressException, MessagingException, IOException {
