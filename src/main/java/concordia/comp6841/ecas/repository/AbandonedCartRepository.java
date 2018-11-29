@@ -1,5 +1,7 @@
 package concordia.comp6841.ecas.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -13,5 +15,5 @@ public interface AbandonedCartRepository extends CrudRepository<AbandonedCart, L
 
 	@Override
     @Transactional
-    Iterable<AbandonedCart> findAll();
+    List<AbandonedCart> findAll();
 }

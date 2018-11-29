@@ -1,5 +1,7 @@
 package concordia.comp6841.ecas.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,6 +16,6 @@ public interface InactiveCustomerRepository extends CrudRepository<InactiveCusto
 
 	@Override
     @Transactional
-    Iterable<InactiveCustomer> findAll();
+    List<InactiveCustomer> findAll();
 }
 
