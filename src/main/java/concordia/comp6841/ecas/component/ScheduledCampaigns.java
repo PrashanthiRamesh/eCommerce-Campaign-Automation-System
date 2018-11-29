@@ -23,12 +23,15 @@ import org.springframework.stereotype.Component;
 
 import concordia.comp6841.ecas.entity.AbandonedCart;
 import concordia.comp6841.ecas.entity.ActiveCustomer;
+import concordia.comp6841.ecas.entity.COrder;
 import concordia.comp6841.ecas.entity.Campaign;
 import concordia.comp6841.ecas.entity.InactiveCustomer;
+import concordia.comp6841.ecas.entity.OrderItems;
 import concordia.comp6841.ecas.repository.AbandonedCartRepository;
 import concordia.comp6841.ecas.repository.ActiveCustomerRepository;
 import concordia.comp6841.ecas.repository.CampaignRepository;
 import concordia.comp6841.ecas.repository.InactiveCustomerRepository;
+import concordia.comp6841.ecas.repository.OrderRepository;
 
 @Component
 public class ScheduledCampaigns {
@@ -48,11 +51,14 @@ public class ScheduledCampaigns {
 
 	@Autowired
 	private InactiveCustomerRepository inactiveCustomerRepository;
+	
+	@Autowired
+	private OrderRepository orderRepository;
 
 	// every 10 mins for testing (in reality it will be every day at 12pm) cron="0 0
 	// 12 * * ?"
 
-	@Scheduled(fixedRate = 100000)
+	@Scheduled(fixedRate = 360000)
 	public void reportCurrentTime() throws AddressException, MessagingException, IOException {
 		log.info("The time is now {}", dateFormat.format(new Date()));
 		sendmail();
@@ -77,7 +83,7 @@ public class ScheduledCampaigns {
 		// DONE: check if campaign is within start and end
 		// DONE: get customer group model based on customer_group
 		// DONE: iterate through customer group and get email
-		// get customer email and get orders and order items based on them
+		// DONE: get customer email and get orders and order items based on them
 		// DONE: set body= dear first name last name, body from campaign
 
 		if (!campaignRepository.findAll().isEmpty()) {
@@ -94,9 +100,20 @@ public class ScheduledCampaigns {
 							for (AbandonedCart abandonedCart : abandonedCartRepository.findAll()) {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(abandonedCart.getEmail()));
+								String order_items="";
+								if(!orderRepository.findAll().isEmpty()) {
+									for(COrder cOrder : orderRepository.findAll()) {
+										if(!cOrder.getOrder_items().isEmpty()){
+											order_items="Order Items:\n";
+											for(OrderItems orderItems: cOrder.getOrder_items()) {
+												order_items+="- "+orderItems.getProduct_name();
+											}
+										}
+									}
+								}
 								msg.setText(
 										"Dear " + abandonedCart.getFirst_name() + " " + abandonedCart.getFirst_name()
-												+ ",\n\n" + campaign.getBody() + "\n\nThanks,\nTeam SPM 1");
+												+ ",\n\n" + campaign.getBody()+"\nYour" +order_items+ "\n\nThanks,\nTeam SPM 1");
 								msg.setSentDate(new Date());
 								Transport.send(msg);
 								log.info("Abandoned cart Campaign Sent");
@@ -108,9 +125,20 @@ public class ScheduledCampaigns {
 							for (ActiveCustomer activeCustomer : activeCustomerRepository.findAll()) {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(activeCustomer.getEmail()));
+								String order_items="";
+								if(!orderRepository.findAll().isEmpty()) {
+									for(COrder cOrder : orderRepository.findAll()) {
+										if(!cOrder.getOrder_items().isEmpty()){
+											order_items="Order Items:\n";
+											for(OrderItems orderItems: cOrder.getOrder_items()) {
+												order_items+="- "+orderItems.getProduct_name();
+											}
+										}
+									}
+								}
 								msg.setText(
 										"Dear " + activeCustomer.getFirst_name() + " " + activeCustomer.getFirst_name()
-												+ ",\n\n" + campaign.getBody() + "\n\nThanks,\nTeam SPM 1");
+												+ ",\n\n" + campaign.getBody()+"\nYour" +order_items+ "\n\nThanks,\nTeam SPM 1");
 								msg.setSentDate(new Date());
 								Transport.send(msg);
 								log.info("Active Campaign Sent");
@@ -123,9 +151,20 @@ public class ScheduledCampaigns {
 							for (InactiveCustomer inactiveCustomer : inactiveCustomerRepository.findAll()) {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(inactiveCustomer.getEmail()));
+								String order_items="";
+								if(!orderRepository.findAll().isEmpty()) {
+									for(COrder cOrder : orderRepository.findAll()) {
+										if(!cOrder.getOrder_items().isEmpty()){
+											order_items="Order Items:\n";
+											for(OrderItems orderItems: cOrder.getOrder_items()) {
+												order_items+="- "+orderItems.getProduct_name();
+											}
+										}
+									}
+								}
 								msg.setText("Dear " + inactiveCustomer.getFirst_name() + " "
 										+ inactiveCustomer.getFirst_name() + ",\n\n" + campaign.getBody()
-										+ "\n\nThanks,\nTeam SPM 1");
+										+"\nYour" +order_items+"\n\nThanks,\nTeam SPM 1");
 								msg.setSentDate(new Date());
 								Transport.send(msg);
 								log.info("Inactive Campaign Sent");
