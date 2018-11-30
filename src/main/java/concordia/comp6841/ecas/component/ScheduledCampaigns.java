@@ -101,8 +101,8 @@ public class ScheduledCampaigns {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(abandonedCart.getEmail()));
 								String order_items="";
-								if(!orderRepository.findAll().isEmpty()) {
-									for(COrder cOrder : orderRepository.findAll()) {
+								if(! orderRepository.findByCEmail(abandonedCart.getEmail()).isEmpty()) {
+									for(COrder cOrder : orderRepository.findByCEmail(abandonedCart.getEmail())) {
 										if(!cOrder.getOrder_items().isEmpty()){
 											order_items="Order Items:\n";
 											for(OrderItems orderItems: cOrder.getOrder_items()) {
@@ -126,8 +126,8 @@ public class ScheduledCampaigns {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(activeCustomer.getEmail()));
 								String order_items="";
-								if(!orderRepository.findAll().isEmpty()) {
-									for(COrder cOrder : orderRepository.findAll()) {
+								if(! orderRepository.findByCEmail(activeCustomer.getEmail()).isEmpty()) {
+									for(COrder cOrder :  orderRepository.findByCEmail(activeCustomer.getEmail())) {
 										if(!cOrder.getOrder_items().isEmpty()){
 											order_items="Order Items:\n";
 											for(OrderItems orderItems: cOrder.getOrder_items()) {
@@ -152,8 +152,8 @@ public class ScheduledCampaigns {
 								msg.setRecipients(Message.RecipientType.TO,
 										InternetAddress.parse(inactiveCustomer.getEmail()));
 								String order_items="";
-								if(!orderRepository.findAll().isEmpty()) {
-									for(COrder cOrder : orderRepository.findAll()) {
+								if(! orderRepository.findByCEmail(inactiveCustomer.getEmail()).isEmpty()) {
+									for(COrder cOrder :  orderRepository.findByCEmail(inactiveCustomer.getEmail())) {
 										if(!cOrder.getOrder_items().isEmpty()){
 											order_items="Order Items:\n";
 											for(OrderItems orderItems: cOrder.getOrder_items()) {
